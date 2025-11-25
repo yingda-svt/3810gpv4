@@ -1,0 +1,76 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Assignment Management</h1>
+    <p class="text-muted mb-0">Set course assignments and due dates</p>
+  </div>
+  <form method="GET" class="d-flex gap-2">
+    <select name="course" class="form-select">
+      <option value="">All Courses</option>
+      <% courses.forEach(course => { %>
+        <option value="<%= course._id %>" <%= query.course === String(course._id) ? 'selected' : '' %>><%= course.title %></option>
+      <% }) %>
+    </select>
+    <button class="btn btn-outline-secondary">Filter</button>
+  </form>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <% if (assignments.length === 0) { %>
+      <div class="alert alert-info">No assignments created yet</div>
+    <% } else { %>
+      <div class="list-group">
+        <% assignments.forEach(assignment => { %>
+          <div class="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <h2 class="h5 mb-1"><%= assignment.title %></h2>
+              <p class="mb-1 text-muted"><%= assignment.course?.title %></p>
+              <p class="mb-1">Due: <%= new Date(assignment.dueDate).toLocaleDateString() %></p>
+              <p class="mb-0">Max Score: <%= assignment.maxScore %></p>
+            </div>
+            <form action="/assignments/<%= assignment._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this assignment?')">Delete</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Add Assignment</h2>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form method="POST" class="d-grid gap-3">
+          <div>
+            <label class="form-label">Title</label>
+            <input name="title" class="form-control" required />
+          </div>
+          <div>
+            <label class="form-label">Course</label>
+            <select name="course" class="form-select" required>
+              <% courses.forEach(course => { %>
+                <option value="<%= course._id %>"><%= course.title %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Due Date</label>
+            <input type="date" name="dueDate" class="form-control" required />
+          </div>
+          <div>
+            <label class="form-label">Max Score</label>
+            <input type="number" name="maxScore" class="form-control" min="1" value="100" />
+          </div>
+          <div>
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Create Assignment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
