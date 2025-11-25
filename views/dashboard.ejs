@@ -1,0 +1,60 @@
+<section class="pb-3">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Welcome back, <%= currentUser?.name || 'user' %></h1>
+      <p class="text-muted mb-0">Manage courses, students, assignments, and grades from here.</p>
+    </div>
+    <a href="/courses" class="btn btn-primary">Create course</a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Courses</p>
+          <h2 class="h3"><%= stats.courses %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Students</p>
+          <h2 class="h3"><%= stats.students %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Teachers</p>
+          <h2 class="h3"><%= stats.teachers %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Assignments</p>
+          <h2 class="h3"><%= stats.assignments %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="mt-4">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Quick links</h2>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="/courses" class="btn btn-outline-primary">Courses</a>
+          <a href="/students" class="btn btn-outline-primary">Students</a>
+          <a href="/teachers" class="btn btn-outline-primary">Teachers</a>
+          <a href="/assignments" class="btn btn-outline-primary">Assignments</a>
+          <a href="/grades" class="btn btn-outline-primary">Grades</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+

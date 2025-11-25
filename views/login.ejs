@@ -1,0 +1,25 @@
+<section class="row justify-content-center py-5">
+  <div class="col-lg-4 col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 text-center mb-4">Sign in to OLE</h1>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form action="/login" method="POST" class="d-grid gap-3">
+          <div>
+            <label for="userId" class="form-label">User ID</label>
+            <input type="text" name="userId" id="userId" class="form-control" placeholder="Admin or S1306615" required />
+          </div>
+          <div>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Log in</button>
+        </form>
+        <p class="text-muted small text-center mt-3">Use the sample accounts listed in the README.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
