@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Grade Management</h1>
+    <p class="text-muted mb-0">View and update student assignment grades</p>
+  </div>
+  <form class="d-flex gap-2" method="GET">
+    <select name="assignment" class="form-select">
+      <option value="">All Assignments</option>
+      <% assignments.forEach(assignment => { %>
+        <option value="<%= assignment._id %>" <%= query.assignment === String(assignment._id) ? 'selected' : '' %>>
+          <%= assignment.title %>
+        </option>
+      <% }) %>
+    </select>
+    <select name="student" class="form-select">
+      <option value="">All Students</option>
+      <% students.forEach(student => { %>
+        <option value="<%= student._id %>" <%= query.student === String(student._id) ? 'selected' : '' %>>
+          <%= student.name %>
+        </option>
+      <% }) %>
+    </select>
+    <button class="btn btn-outline-secondary">Filter</button>
+  </form>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <% if (grades.length === 0) { %>
+      <div class="alert alert-info">No grade records yet</div>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Assignment</th>
+              <th>Score</th>
+              <th>Feedback</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% grades.forEach(grade => { %>
+              <tr>
+                <td><%= grade.student?.name %></td>
+                <td><%= grade.assignment?.title %></td>
+                <td><%= grade.score %></td>
+                <td><%= grade.feedback || '-' %></td>
+                <td class="text-end">
+                  <form action="/grades/<%= grade._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this record?')">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Add/Update Grade</h2>
+        <form method="POST" class="d-grid gap-3">
+          <div>
+            <label class="form-label">Student</label>
+            <select name="student" class="form-select" required>
+              <% students.forEach(student => { %>
+                <option value="<%= student._id %>"><%= student.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Assignment</label>
+            <select name="assignment" class="form-select" required>
+              <% assignments.forEach(assignment => { %>
+                <option value="<%= assignment._id %>"><%= assignment.title %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Score</label>
+            <input type="number" name="score" class="form-control" min="0" required />
+          </div>
+          <div>
+            <label class="form-label">Feedback</label>
+            <textarea name="feedback" class="form-control" rows="2"></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Save Grade</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
