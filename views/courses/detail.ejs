@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0"><%= course.title %> <small class="text-muted">(<%= course.code %>)</small></h1>
+  <a href="/courses" class="btn btn-outline-secondary">Back to list</a>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Course information</h2>
+        <p class="mb-1"><strong>Instructor:</strong> <%= course.teacher %></p>
+        <p class="mb-1"><strong>Schedule/location:</strong> <%= course.schedule || 'Not specified' %></p>
+        <p class="mb-1"><strong>Status:</strong>
+          <span class="badge <%= course.isActive ? 'bg-success' : 'bg-secondary' %>">
+            <%= course.isActive ? 'Active' : 'Inactive' %>
+          </span>
+        </p>
+        <p class="mb-1"><strong>Tags:</strong>
+          <% if (course.tags?.length) { %>
+            <%= course.tags.join(', ') %>
+          <% } else { %>
+            N/A
+          <% } %>
+        </p>
+        <p class="mt-3"><strong>Description:</strong><br /><%= course.description || 'No description yet.' %></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Edit course</h2>
+        <form action="/courses/<%= course._id %>?_method=PUT" method="POST" class="d-grid gap-3">
+          <div>
+            <label class="form-label">Course title</label>
+            <input name="title" class="form-control" value="<%= course.title %>" required />
+          </div>
+          <div>
+            <label class="form-label">Instructor</label>
+            <input name="teacher" class="form-control" value="<%= course.teacher %>" required />
+          </div>
+          <div>
+            <label class="form-label">Schedule / location</label>
+            <input name="schedule" class="form-control" value="<%= course.schedule %>" />
+          </div>
+          <div>
+            <label class="form-label">Tags</label>
+            <input name="tags" class="form-control" value="<%= course.tags?.join(', ') %>" />
+          </div>
+          <div>
+            <label class="form-label">Active status</label>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" name="isActive" <% if (course.isActive) { %>checked<% } %> />
+              <label class="form-check-label">Active</label>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"><%= course.description %></textarea>
+          </div>
+          <button class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

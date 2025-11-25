@@ -1,0 +1,120 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Course Management</h1>
+    <p class="text-muted mb-0">Create new courses or search existing ones.</p>
+  </div>
+  <form class="row g-2 align-items-end" method="GET">
+    <div class="col-md-5">
+      <label class="form-label mb-1">Keyword</label>
+      <input
+        type="search"
+        name="keyword"
+        class="form-control"
+        placeholder="Course title or description"
+        value="<%= query.keyword || '' %>"
+      />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label mb-1">Instructor</label>
+      <input
+        type="search"
+        name="teacher"
+        class="form-control"
+        placeholder="Instructor name"
+        value="<%= query.teacher || '' %>"
+      />
+    </div>
+    <div class="col-md-2">
+      <label class="form-label mb-1">Status</label>
+      <select name="isActive" class="form-select">
+        <option value="">All</option>
+        <option value="true" <%= query.isActive === 'true' ? 'selected' : '' %>>Active</option>
+        <option value="false" <%= query.isActive === 'false' ? 'selected' : '' %>>Inactive</option>
+      </select>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-outline-secondary w-100">Search</button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <% if (courses.length === 0) { %>
+      <div class="alert alert-info">No courses yet. Use the form on the right to create one.</div>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Code</th>
+              <th>Instructor</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% courses.forEach(course => { %>
+              <tr>
+                <td><strong><%= course.title %></strong></td>
+                <td><code><%= course.code %></code></td>
+                <td><%= course.teacher %></td>
+                <td>
+                  <span class="badge <%= course.isActive ? 'bg-success' : 'bg-secondary' %>">
+                    <%= course.isActive ? 'Active' : 'Inactive' %>
+                  </span>
+                </td>
+                <td class="text-end">
+                  <a href="/courses/<%= course._id %>" class="btn btn-sm btn-outline-primary">Details</a>
+                  <form action="/courses/<%= course._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this course?')">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Create course</h2>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form method="POST" class="d-grid gap-3">
+          <div>
+            <label class="form-label">Course title</label>
+            <input name="title" class="form-control" required />
+          </div>
+          <div>
+            <label class="form-label">Course code</label>
+            <input name="code" class="form-control" required />
+          </div>
+          <div>
+            <label class="form-label">Instructor</label>
+            <input name="teacher" class="form-control" required />
+          </div>
+          <div>
+            <label class="form-label">Schedule / venue</label>
+            <input name="schedule" class="form-control" placeholder="Mon 10:00-12:00, Rm 301" />
+          </div>
+          <div>
+            <label class="form-label">Tags (comma separated)</label>
+            <input name="tags" class="form-control" placeholder="STEM, Year 1" />
+          </div>
+          <div>
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Create course</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
