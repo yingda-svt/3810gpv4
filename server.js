@@ -22,10 +22,12 @@ const apiRoutes = require('./routes/api');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const MONGODB_URI = process.env.MONGODB_URI;
+const SESSION_SECRET = process.env.SESSION_SECRET || 'change_me_session_secret';
 
 async function bootstrap() {
   try {
-    await connectDB(process.env.MONGODB_URI);
+    await connectDB(MONGODB_URI);
     await ensureAdminUser();
 
     app.set('view engine', 'ejs');
@@ -42,7 +44,7 @@ async function bootstrap() {
     app.use(
       cookieSession({
         name: 'oleSession',
-        secret: process.env.SESSION_SECRET || 'ole_secret',
+        secret: SESSION_SECRET || 'ole_secret',
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
@@ -87,4 +89,5 @@ async function bootstrap() {
 }
 
 bootstrap();
+
 
